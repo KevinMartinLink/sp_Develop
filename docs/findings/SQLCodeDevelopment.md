@@ -20,6 +20,21 @@ T-SQL code must execute properly and performant. It must be readable, well laid 
 1. TOC
 {:toc}
 </details>
+[Back to top](#top)
+
+---
+
+## Not Using Source Control
+**Check Id:** [None yet, click here to view the issue](https://github.com/EmergentSoftware/SQL-Server-Development-Assessment/issues/161)
+
+Your database objects (tables, views, stored procedures, functions, triggers, users, roles, schemas, static data, ...) should be in a version control system. 
+
+Source control lets you see who made what changes, when, and why. Automate SQL changes during deployment. Rollback any changes you don't want. Source control helps when you develop branch features.
+
+Most importantly, you work from a single source of truth, greatly reducing the risk of downtime at deployment.
+
+
+[Redgate SQL Source Control](https://www.red-gate.com/products/sql-development/sql-source-control/) is our tool of choice.
 
 [Back to top](#top)
 
@@ -67,6 +82,9 @@ SELECT
 		);
 ```
 
+[Back to top](#top)
+
+---
 
 ## UPSERT Pattern
 **Check Id:** [None yet, click here to view the issue](https://github.com/EmergentSoftware/SQL-Server-Development-Assessment/issues/151)
@@ -204,9 +222,9 @@ WHEN NOT MATCHED THEN
          (S.FirstName, S.LastName);
 ```
 
+[Back to top](#top)
 
-
-
+---
 
 
 ## Using ORDER BY
@@ -221,8 +239,13 @@ SQL Server is the second most expensive sorting system, remind the developer the
 - ⬇
 - Microsoft Access $159.99
 
+[Back to top](#top)
+
+---
+
 ## Cursors
 **Check Id:** [None yet, click here to view the issue](https://github.com/EmergentSoftware/SQL-Server-Development-Assessment/issues/25)
+
 
 #### Overview
 Even though you'll hear DBAs and other experts say, "never use cursors!", there are a few cases were cursors come in handy and there are a few important pointers.
@@ -455,6 +478,22 @@ WHERE
 
 ---
 
+## No Separate Environments
+**Check Id:** [None yet, click here to view the issue](https://github.com/EmergentSoftware/SQL-Server-Development-Assessment/issues/162)
+
+You should have a Development, Testing & Production environment.
+
+SQL Server development is a continuous process to avoid the issues caused by development and reducing the risks of blocking business.
+
+Accidents happen! Imagine you accidentally made an update to thousands of records that you can not undo without hours of work. Imagine that you do not have access to original data before you changed it. Feeling scared yet? This is where a development and test environment saves effort.
+
+A development environment allows developers to program and perform test ensuring their code is correct before pushing to a centralized testing environment for UAT (User Acceptance Testing) or staging for production.
+
+[Back to top](#top)
+
+---
+
+
 ## Not Using Semicolon to Terminate Statements
 **Check Id:** [None yet, click here to view the issue](https://github.com/EmergentSoftware/SQL-Server-Development-Assessment/issues/35)
 
@@ -474,6 +513,41 @@ SELECT P.FirstName FROM Person.Person AS P; /* <-- semicolon goes at the end her
 Search ARGument..able. Avoid having a column or variable used within an expression or used as a function parameter. Columns are best used its self on one side of the operator. You will get a table scan instead of a index seek which will hurt performance.
 
 ![Non-SARGable Scan vs. SARGable Seek](../Images/Using_a_Non-SARGable_Expression_in_a_WHERE_Clause.png)
+
+
+Another issue with non-sargable queries besides the forced table scan is SQL Server will not be able to provide a recommended index. See [Using Missing Indexes Recommendations](/SQL-Server-Development-Assessment/findings/sql-code-conventions#using-missing-indexes-recommendations)
+
+By changed the WHERE clause to not use the YEAR() function and doing a bit more typing allows SQL Server to understand what you want it to do.
+
+![Non-SARGable Does Not Get Index Recommendation](../Images/Non-SARGable_Does_Not_Get_Index_Recommendation.png)
+
+
+[Back to top](#top)
+
+---
+
+## Using Missing Indexes Recommendations
+**Check Id:** [None yet, click here to view the issue](https://github.com/EmergentSoftware/SQL-Server-Development-Assessment/issues/166)
+
+The SQL Server Missing Indexes recommendations feature has limitations and even recommends you create indexes that already exist. It is not meant for you fine tune and only provides sometimes adequate recommendations.
+
+You should assess the missing index recommendation but create a fine tuned custom index that includes all that is excluded items.
+
+See the [Books Online: Limitations of the Missing Indexes Feature](http://msdn.microsoft.com/en-us/library/ms345485(v=sql.105).aspx)
+
+
+The missing index feature has the following limitations:
+
+* It is not intended to fine tune an indexing configuration.
+* It cannot gather statistics for more than 500 missing index groups.
+* It does not specify an order for columns to be used in an index.
+* For queries involving only inequality predicates, it returns less accurate cost information.
+* It reports only include columns for some queries, so index key columns must be manually selected.
+* It returns only raw information about columns on which indexes might be missing.
+* It does not suggest filtered indexes.
+* It can return different costs for the same missing index group that appears multiple times in XML Showplans.
+* It does not consider trivial query plans.
+
 
 [Back to top](#top)
 
@@ -595,6 +669,21 @@ You also might be using SELECT DISTINCT to mask a JOIN problem. It’s much bett
 [Back to top](#top)
 
 ---
+
+## Not Using SSIS
+**Check Id:** [None yet, click here to view the issue](https://github.com/EmergentSoftware/SQL-Server-Development-Assessment/issues/164)
+
+Use SSIS (SQL Server Integration Service) to move data around. You can use stored procedures and SQL Server Agent Jobs instead of SSIS to ETL data but it will make it difficult to orchestrate tasks between different environments. 
+
+SSIS gives you the ability to create project and package parameters that can be configured in the SSIS catalog Environments. SSIS has built in logging and Execution run reports you can access from SSMS (SQL Server Management Studio).
+
+When it comes time to migrate to Azure you can lift and shift you SSIS packages to an Azure-SSIS Integration Runtime.
+
+
+[Back to top](#top)
+
+---
+
 
 ## IN/NOT VS EXISTS/NOT EXISTS
 **Check Id:** [None yet, click here to view the issue](https://github.com/EmergentSoftware/SQL-Server-Development-Assessment/issues/70)
