@@ -287,7 +287,7 @@ Acct, AP, AR, Hr, Rpt, Assoc, Desc
 ## Non-Affirmative Boolean Name Use
 **Check Id:** [None yet, click here to view the issue](https://github.com/EmergentSoftware/SQL-Server-Development-Assessment/issues/79)
 
-Bit columns should be given affirmative boolean names like "IsDeletedFlag", "HasPermissionFlag", or "IsValidFlag" so that the meaning of the data in the column is not ambiguous; negative boolean names are harder to read when checking values in T-SQL because of double-negatives (e.g. "Not IsNotDeleted"). 
+Bit columns should be given affirmative boolean names like "IsDeletedFlag", "HasPermissionFlag", or "IsValidFlag" so that the meaning of the data in the column is not ambiguous; negative boolean names are harder to read when checking values in T-SQL because of double-negatives (e.g. "Not IsNotDeleted").
 
 [Back to top](#top)
 
@@ -299,7 +299,7 @@ Bit columns should be given affirmative boolean names like "IsDeletedFlag", "Has
 - Avoid repeating the table name except for:
   - **Table Primary Key:** A table primary key should include the table name and Id (e.g. PersonId) [See Using ID for Primary Key Column Name](#using-id-for-primary-key-column-name)
   - **Natural Common Words:** PatientNumber, PurchaseOrderNumber, DriversLicenseNumber
-  - **Generic Names:** When using generic names like "Number", "Name", "Description" & "Code" you can use repeat the table name
+  - **Generic Names:** When using generic names like "Number", "Name", "Description" & "Code" you can repeat the table name
     - Instead use "AccountNumber", "AddressTypeName", "ProductDescription" & "StateCode"
     - SELECT queries will need aliases when two tables use generic columns like "Name"
 - Use singular, not plural
@@ -310,8 +310,9 @@ Bit columns should be given affirmative boolean names like "IsDeletedFlag", "Has
   - Invoice**Id** is the identity of the invoice record
   - Part**Number** is an alternate key
   - Start**Date** is the date something started
+  - RowUpdate**PersonId** is the person who last updated a record
   - RowCreate**Time** is the date and time something was created
-  - RowLastUpdate**Time** is the date and time something was modified
+  - RowUpdate**Time** is the date and time something was modified
   - Line**Amount** is a currency amount not dependent on the data type like DECIMAL(19, 4)
   - Group**Name** is the text string not dependent on the data type like VARCHAR() or NVARCHAR()
   - State**Code** indicates the short form of something
